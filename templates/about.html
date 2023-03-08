@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% block title %} YouTube - Free video downloader - Your videos... {% endblock
+%}
+
+{% block content %}
+<div class="position-fixed w-100 h-100" style="z-index: 999; display: none"
+  id="loader">
+  <div class="position-absolute top-50 start-50" style="z-index: 2; width:
+    100px; height: 100px; transform: translate(-50%, -50%);">
+    <div class="spinner-border text-primary w-100 h-100" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  <div class="position-absolute bg-black w-100 h-100 opacity-75" style="z-index:
+    1;"></div>
+</div>
+
+
+{% if videos %}
+<div>
+  <div id="convert-result" role="alert" class="row col-lg-8 col-md-10 col-12
+    mx-auto mt-5 shadow-lg bg-gradient text-white">
+    <div class="container my-2">
+
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-4 col-lg-4 order-12 order-lg-1 mt-3 mx-auto
+          result-col-thumb"><img class="rounded" src="{{img_url}}" width="255"
+            height="255">
+          <h6 class="my-2">{{test_title}}</h6>
+        </div>
+        <div class="col-12 col-lg-6 order-2">
+
+          <div class="row m-0 col-12 col-lg-8">
+            <div class="d-lg-block p-0">
+              <form action="/done" method="post" id="form-video">
+                <select id="Download" name="Download">
+                  {% for i in videos %}
+
+                  {% if i.type == 'video' %}
+                  <option value="{{i.resolution}}">{{i.mime_type}} -
+                    {{i.resolution}}</option>
+                  <hr>
+                  {% elif i.type == 'audio' %}
+                  <option value="{{i.abr}}">{{i.mime_type}} - {{i.abr}}</option>
+                  <hr>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+                <input type="submit" value="Download" class="btn btn-primary
+                  d-inline-block float-end">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    const videoForm = document.getElementById("form-video");
+    if(videoForm) {
+        videoForm.addEventListener("submit", (e) =>  {
+            const loader = document.querySelector("#loader");
+            if(loader) {
+              loader.style.display = "block";
+            }
+          });
+    }
+  </script>
+{% else %}
+<h1><p>{{ mesage }}</p></h1>
+<h1><p>{{ errorType }}</p></h1>
+{% endif %}
+{% endblock %}
