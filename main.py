@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request,Form
+from fastapi import FastAPI, Request, Form
+from fastapi.middleware.cors import CORSMiddleware 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -8,6 +9,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import os
 from pathlib import Path
 app = FastAPI()
+
+origins = ['*']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+) 
 
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
