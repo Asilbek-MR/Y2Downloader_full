@@ -55,10 +55,14 @@
 
       <div class="logo">
         <h1><a href="/">Home</a></h1>
+       
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
-
+      {% if message %}
+       <h1><a href="/">{{message}}</a></h1>
+       {% else %}
+       {% endif %}
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
@@ -973,18 +977,20 @@
   <script src="{{ url_for('static', path='/js/main.js') }}"></script>
   <script>
     const elForm = document.getElementById("form-el")
-    elForm.addEventListener("submit", function formSubmit(e) {
-      var inputVal = document.getElementById("inputField").value;
-      if (inputVal == "") {
-        e.preventDefault()
-        alert("Input maydoni bo'sh!"); // yoki boshqa ish qiling
-        return
-      }
-      const loader = document.querySelector("#loader");
-      if(loader) {
-        loader.style.display = "block";
-      }
-    });
+    if(elForm) {
+      elForm.addEventListener("submit", function formSubmit(e) {
+        var inputVal = document.getElementById("inputField").value;
+        if (inputVal == "") {
+          e.preventDefault()
+          alert("Sorry no URL !!!"); // yoki boshqa ish qiling
+          return
+        }
+        const loader = document.querySelector("#loader");
+        if(loader) {
+          loader.style.display = "block";
+        }
+      });
+    }
   </script>
 </body>
 

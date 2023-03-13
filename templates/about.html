@@ -3,17 +3,6 @@
 %}
 
 {% block content %}
-<div class="position-fixed w-100 h-100" style="z-index: 999; display: none"
-  id="loader">
-  <div class="position-absolute top-50 start-50" style="z-index: 2; width:
-    100px; height: 100px; transform: translate(-50%, -50%);">
-    <div class="spinner-border text-primary w-100 h-100" role="status">
-      <span class="sr-only"></span>
-    </div>
-  </div>
-  <div class="position-absolute bg-black w-100 h-100 opacity-75" style="z-index:
-    1;"></div>
-</div>
 
 
 {% if videos %}
@@ -35,21 +24,21 @@
           <div class="row m-0 col-12 col-lg-8">
             <div class="d-lg-block p-0">
               <form action="/done" method="post" id="form-video">
-                <select id="Download" name="Download">
+                <select id="Download" name="download">
                   {% for i in videos %}
-
-                  {% if i.type == 'video' %}
                   <option value="{{i.resolution}}">{{i.mime_type}} -
                     {{i.resolution}}</option>
                   <hr>
-                  {% elif i.type == 'audio' %}
+                  {% endfor %}
+                  {% for i in audio %}
                   <option value="{{i.abr}}">{{i.mime_type}} - {{i.abr}}</option>
                   <hr>
-                  {% endif %}
                   {% endfor %}
+                  
                 </select>
-                <input type="submit" value="Download" class="btn btn-primary
-                  d-inline-block float-end">
+                <!--<input type="submit" value="Download" class="btn btn-primary
+                  d-inline-block float-end">-->
+                  <button type="submit" class="btn btn-primary d-inline-block float-end">Download</button>
               </form>
             </div>
           </div>
@@ -58,17 +47,6 @@
     </div>
   </div>
 </div>
-<script>
-    const videoForm = document.getElementById("form-video");
-    if(videoForm) {
-        videoForm.addEventListener("submit", (e) =>  {
-            const loader = document.querySelector("#loader");
-            if(loader) {
-              loader.style.display = "block";
-            }
-          });
-    }
-  </script>
 {% else %}
 <h1><p>{{ mesage }}</p></h1>
 <h1><p>{{ errorType }}</p></h1>
