@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from pytube import YouTube
 from fastapi.responses import RedirectResponse, StreamingResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-import os
+import youtube_dl
 from io import BytesIO
 from pathlib import Path
 app = FastAPI()
@@ -37,21 +37,19 @@ async def download_q(request: Request):
 @app.post("/about",response_class=HTMLResponse)
 async def about(request: Request):
     global test_url
-    try:
-        form_date = await request.form()
-        youtubeUrl = form_date["url"]
-        print(youtubeUrl)
-        test_url=YouTube(youtubeUrl)
-        
-        test_title = test_url.title
-        videos = test_url.streams.filter(progressive=True)
-        audio = test_url.streams.filter(only_audio=True)
-        img_url=test_url.thumbnail_url
-        mesage = '++++++++++++++++'
-    except:
-        mesage = 'Enter Valid YouTube Video URL!'
-        return templates.TemplateResponse("about.html" ,{"request":request, "mesage":mesage})
-    return templates.TemplateResponse("about.html", {"request":request, "mesage":mesage,"videos":videos,"test_title":test_title,"img_url":img_url,"audio":audio})
+    # try:
+    form_date = await request.form()
+    youtubeUrl = form_date["url"]
+    test_url=YouTube(youtubeUrl)
+    print(test_url)
+    test_title = test_url.title
+    videos = test_url.streams.filter(progressive=True)
+    img_url=test_url.thumbnail_url
+    mesage = '++++++++++++++++'
+    # except:
+        # mesage = 'Enter Valid YouTube Video URL!'
+        # return templates.TemplateResponse("about.html" ,{"request":request, "mesage":mesage})
+    return templates.TemplateResponse("about.html", {"request":request, "mesage":mesage,"videos":videos,"test_title":test_title,"img_url":img_url})
 
 @app.post("/done", response_class=HTMLResponse)
 async def download_vid(request: Request,download: str = Form(...)):
